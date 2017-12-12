@@ -5,7 +5,7 @@ import java.util.Set;
 
 public final class Board extends Prototype {
     String name;
-    final Set<TasksList> lists = new HashSet<>();
+    Set<TasksList> lists = new HashSet<>();
 
     public Board(String name) {
         this.name = name;
@@ -34,5 +34,19 @@ public final class Board extends Prototype {
 
     public Board shallowCopy() throws CloneNotSupportedException {
         return (Board)super.clone();
+    }
+
+    public Board deepCopy() throws CloneNotSupportedException {
+        Board clonedBoard = (Board)super.clone();
+        clonedBoard.lists = new HashSet<>();
+        for(TasksList theList : lists) {
+            TasksList clonedList = new TasksList(theList.getName());
+            for(Task task : theList.getTasks()) {
+//                clonedList.getTasks().add(task);    // original Kodilla code
+                clonedList.getTasks().add(new Task(task.getName()));    // my code
+            }
+            clonedBoard.getLists().add(clonedList);
+        }
+        return clonedBoard;
     }
 }
