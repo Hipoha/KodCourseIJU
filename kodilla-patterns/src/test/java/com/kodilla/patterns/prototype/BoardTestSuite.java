@@ -31,10 +31,20 @@ public class BoardTestSuite {
         board.getLists().add(listToDo);
         board.getLists().add(listInProgress);
         board.getLists().add(listDone);
-        System.out.println(board);
 
-        //When
+        //making a shallow clone of object board
+        Board clonedBoard = null;
+        try {
+            clonedBoard = board.shallowCopy();
+            clonedBoard.setName("Project number 2");
+        } catch (CloneNotSupportedException e) {
+            System.out.println(e);
+        }
+        System.out.println(board);
+        System.out.println(clonedBoard);
+
         //Then
         Assert.assertEquals(3, board.getLists().size());
+        Assert.assertEquals(3, clonedBoard.getLists().size());
     }
 }
