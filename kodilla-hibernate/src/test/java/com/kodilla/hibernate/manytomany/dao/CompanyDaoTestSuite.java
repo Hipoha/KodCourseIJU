@@ -9,11 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CompanyDaoTestSuite {
     @Autowired
-    CompanyDao companyDao;
+    private CompanyDao companyDao;
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @Test
     public void testSaveManyToMany() {
@@ -59,5 +63,54 @@ public class CompanyDaoTestSuite {
         } catch (Exception e) {
             //do nothing
         }
+    }
+
+    @Test
+    public void testNamedQueries() {
+        // Given
+        Employee johnSmith = new Employee("John", "Smith");
+        Employee stephanieClarckson = new Employee("Stephanie", "Clarckson");
+        Employee lindaKovalsky = new Employee("Linda", "Smith");
+
+        Company softwareMachine = new Company("Software Machine");
+        Company softFinance = new Company("Soft Finance");
+        Company greyMatter = new Company("Grey Matter");
+
+        softwareMachine.getEmployees().add(johnSmith);
+        softFinance.getEmployees().add(stephanieClarckson);
+        softFinance.getEmployees().add(lindaKovalsky);
+        greyMatter.getEmployees().add(johnSmith);
+        greyMatter.getEmployees().add(lindaKovalsky);
+
+        johnSmith.getCompanies().add(softwareMachine);
+        johnSmith.getCompanies().add(greyMatter);
+        stephanieClarckson.getCompanies().add(softFinance);
+        lindaKovalsky.getCompanies().add(softFinance);
+        lindaKovalsky.getCompanies().add(greyMatter);
+
+        companyDao.save(softwareMachine);
+        int softwareMachineId = softwareMachine.getId();
+        companyDao.save(softFinance);
+        int softFinanceId = softFinance.getId();
+        companyDao.save(greyMatter);
+        int greyMatterId = greyMatter.getId();
+
+        // When
+        List<Company> sofCompanyName = companyDao.retrieveCompanyByNameBeginningWith("Sof");
+        List<Employee> smithEmployeeName = employeeDao.retrieveEmployeesWithLastName("Smith");
+
+        // Then
+        Assert.assertEquals(2, sofCompanyName.size());
+        Assert.assertEquals(2, smithEmployeeName.size());
+
+        //Cleanup
+        try {
+            companyDao.delete(softwareMachineId);
+            companyDao.delete(softFinanceId);
+            companyDao.delete(greyMatterId);
+        } catch (Exception e) {
+            // do nothing
+        }
+
     }
 }
