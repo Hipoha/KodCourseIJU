@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class ShopService {
     private final List<Order> orders = new ArrayList<>();
@@ -58,4 +59,38 @@ public class ShopService {
         }
         return BigDecimal.ZERO;
     }
+
+    public boolean doPayment(Long orderId) {
+        Iterator<Order> orderIterator = orders.stream()
+                .filter(o -> o.getOrderId().equals(orderId))
+                .iterator();
+        while (orderIterator.hasNext()) {
+            Order theOrder = orderIterator.next();
+            if (theOrder.isPaid()) {
+                return true;
+            } else {
+                Random generator = new Random();
+                theOrder.setPaid(generator.nextBoolean());
+                return theOrder.isPaid();
+            }
+        }
+        return false;
+    }
+
+    public boolean verifyOrder(Long orderId) {
+        Iterator<Order> orderIterator = orders.stream()
+                .filter(o -> o.getOrderId().equals(orderId))
+                .iterator();
+        while (orderIterator.hasNext()) {
+            Order theOrder = orderIterator.next();
+            boolean result = theOrder.isPaid();
+            Random generator = new Random();
+            if (!theOrder.isVerified()) {
+                theOrder.setVerified(result && generator.nextBoolean());
+            }
+            return theOrder.isVerified();
+        }
+        return false;
+    }
+
 }
