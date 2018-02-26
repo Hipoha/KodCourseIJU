@@ -1,6 +1,7 @@
 package com.kodilla.patterns2.facade;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class ShopService {
     private final List<Order> orders = new ArrayList<>();
     @Autowired
@@ -20,6 +22,7 @@ public class ShopService {
             Long maxOrder = orders.stream()
                     .mapToLong(o -> o.getOrderId())
                     .max().orElse(0L);
+            orders.add(new Order(maxOrder + 1, userId, productService));
             return maxOrder + 1;
         } else {
             return -1L;
@@ -91,6 +94,30 @@ public class ShopService {
             return theOrder.isVerified();
         }
         return false;
+    }
+
+    public boolean submitOrder(Long orderId) {
+        Iterator<Order> orderIterator = orders.stream()
+                .filter(o -> o.getOrderId().equals(orderId))
+                .iterator();
+        while (orderIterator.hasNext()) {
+            Order theOrder = orderIterator.next();
+            if (theOrder.isVerified()) {
+                theOrder.setSubmitted(true);
+            }
+            return theOrder.isSubmitted();
+    }
+        return false;
+    }
+
+    public void cancelOrder(Long orderId) {
+        Iterator<Order> orderIterator = orders.stream()
+                .filter(o -> o.getOrderId().equals(orderId))
+                .iterator();
+        while (orderIterator.hasNext()) {
+            Order theOrder = orderIterator.next();
+            orders.remove(theOrder);
+        }
     }
 
 }
