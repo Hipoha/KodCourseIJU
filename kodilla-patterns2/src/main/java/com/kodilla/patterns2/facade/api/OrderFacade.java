@@ -43,7 +43,7 @@ public final class OrderFacade {
             }
             LOGGER.info("Order is ready to submit");
             if (!shopService.submitOrder(orderId)) {
-                LOGGER.info(OrderProcessingException.ERR_SUBMITTING_ERROR);
+                LOGGER.error(OrderProcessingException.ERR_SUBMITTING_ERROR);
                 wasError = true;
                 throw new OrderProcessingException(OrderProcessingException.ERR_SUBMITTING_ERROR);
             }
