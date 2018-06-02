@@ -106,7 +106,7 @@ public class ShopService {
                 theOrder.setSubmitted(true);
             }
             return theOrder.isSubmitted();
-    }
+        }
         return false;
     }
 
