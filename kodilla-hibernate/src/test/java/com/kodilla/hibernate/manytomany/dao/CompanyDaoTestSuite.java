@@ -102,13 +102,6 @@ public class CompanyDaoTestSuite {
         List<Company> maCompanyName = companyDao.retrieveCompanyByNameContaining("Ma");
         List<Employee> miEmployeeName = employeeDao.retrieveEmployeesWithLastNameContaining("mi");
 
-        for (Company company : maCompanyName) {
-            System.out.println(company.getName());
-        }
-        for (Employee employee : miEmployeeName) {
-            System.out.println(employee.getFirstname() + " " + employee.getLastname());
-        }
-
         // Then
         Assert.assertEquals(2, sofCompanyName.size());
         Assert.assertEquals(2, smithEmployeeName.size());
