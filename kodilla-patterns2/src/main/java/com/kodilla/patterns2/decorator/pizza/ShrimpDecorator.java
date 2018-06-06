@@ -2,15 +2,15 @@ package com.kodilla.patterns2.decorator.pizza;
 
 import java.math.BigDecimal;
 
-public class CheeseDecorator extends AbstractPizzaOrderDecorator {
+public class ShrimpDecorator extends AbstractPizzaOrderDecorator {
 
-    public CheeseDecorator(PizzaOrder pizzaOrder) {
+    public ShrimpDecorator(PizzaOrder pizzaOrder) {
         super(pizzaOrder);
     }
 
     @Override
     public BigDecimal getCost() {
-        return super.getCost().add(new BigDecimal(2));
+        return super.getCost().add(new BigDecimal(4));
     }
 
     @Override
@@ -19,6 +19,6 @@ public class CheeseDecorator extends AbstractPizzaOrderDecorator {
         if (oldDescription == "Order: Pizza") {
             oldDescription += " with";
         }
-        return oldDescription + "\n   additional cheese";
+        return oldDescription + "\n   shrimp";
     }
 }

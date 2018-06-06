@@ -23,7 +23,30 @@ public class PizzaOrderTestSuite {
         pizzaOrder = new CheeseDecorator(pizzaOrder);
         //When
         //Then
-        assertEquals(new BigDecimal(18), pizzaOrder.getCost());
+        assertEquals(new BigDecimal(17), pizzaOrder.getCost());
         assertEquals("Order: Pizza with\n   additional cheese", pizzaOrder.getDescription());
+    }
+    @Test
+    public void testPizzaWithCheeseShrimpOrder() {
+        //Given
+        PizzaOrder pizzaOrder = new BasicPizzaOrder();
+        pizzaOrder = new CheeseDecorator(pizzaOrder);
+        pizzaOrder = new ShrimpDecorator(pizzaOrder);
+        //When
+        //Then
+        assertEquals(new BigDecimal(21), pizzaOrder.getCost());
+        assertEquals("Order: Pizza with\n   additional cheese\n   shrimp", pizzaOrder.getDescription());
+    }
+    @Test
+    public void testPizzaWithHamShrimpPineappleOrder() {
+        //Given
+        PizzaOrder pizzaOrder = new BasicPizzaOrder();
+        pizzaOrder = new HamDecorator(pizzaOrder);
+        pizzaOrder = new ShrimpDecorator(pizzaOrder);
+        pizzaOrder = new PineappleDecorator(pizzaOrder);
+        //When
+        //Then
+        assertEquals(new BigDecimal(24), pizzaOrder.getCost());
+        assertEquals("Order: Pizza with\n   ham\n   shrimp\n   pineapple", pizzaOrder.getDescription());
     }
 }
