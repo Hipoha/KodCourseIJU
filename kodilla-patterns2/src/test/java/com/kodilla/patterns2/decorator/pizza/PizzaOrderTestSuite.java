@@ -16,4 +16,14 @@ public class PizzaOrderTestSuite {
         assertEquals(new BigDecimal(15), pizzaOrder.getCost());
         assertEquals("Order: Pizza", pizzaOrder.getDescription());
     }
+    @Test
+    public void testPizzaWithCheeseOrder() {
+        //Given
+        PizzaOrder pizzaOrder = new BasicPizzaOrder();
+        pizzaOrder = new CheeseDecorator(pizzaOrder);
+        //When
+        //Then
+        assertEquals(new BigDecimal(18), pizzaOrder.getCost());
+        assertEquals("Order: Pizza with\n   additional cheese", pizzaOrder.getDescription());
+    }
 }
