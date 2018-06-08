@@ -26,4 +26,23 @@ public class HomeworkTestSuite {
         assertEquals(2,amma.getUpdateCount());
         assertEquals(1,pola.getUpdateCount());
     }
+
+    @Test
+    public void testChangeMentor() {
+        //Given
+        Mentor pola = new Mentor("Pola");
+        Mentor flop = new Mentor("Flop");
+        Participant bing = new Participant("Bing", pola);
+        //When
+        bing.addTask("Catch a butterfly");
+        bing.addTask("Buy a toy");
+        bing.changeObserver(flop);
+        bing.addTask("Take a shower");
+        bing.addTask("Prepare a cocktail");
+        bing.addTask("Play football");
+        bing.addTask("Paint a landscape");
+        //Then
+        assertEquals(2, pola.getUpdateCount());
+        assertEquals(4, flop.getUpdateCount());
+    }
 }
