@@ -3,15 +3,15 @@ package com.kodilla.patterns2.observer.homework;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class TaskQueue implements Observable {
+public class Participant implements Observable {
     private Observer mentor;
     private final Deque<String> tasks;
-    private final String participantName;
+    private final String name;
 
-    public TaskQueue(String participantName, Observer mentor) {
+    public Participant(String name, Observer mentor) {
         this.mentor = mentor;
         tasks = new ArrayDeque<>();
-        this.participantName = participantName;
+        this.name = name;
     }
 
     public void addTask(String task) {
@@ -37,7 +37,7 @@ public class TaskQueue implements Observable {
         return tasks;
     }
 
-    public String getParticipantName() {
-        return participantName;
+    public String getName() {
+        return name;
     }
 }
