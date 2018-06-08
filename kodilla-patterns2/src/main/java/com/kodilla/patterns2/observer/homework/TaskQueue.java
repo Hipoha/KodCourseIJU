@@ -16,7 +16,7 @@ public class TaskQueue implements Observable {
 
     public void addTask(String task) {
         tasks.offer(task);
-        //notifyObserver();
+        notifyObserver();
     }
 
     @Override
