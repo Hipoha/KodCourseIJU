@@ -1,11 +1,10 @@
 package com.kodilla.patterns2.adapter.bookclassifier;
 
-import com.kodilla.patterns2.adapter.bookclasifier.libraryb.Book;
-import com.kodilla.patterns2.adapter.bookclasifier.libraryb.BookSignature;
-import com.kodilla.patterns2.adapter.bookclasifier.libraryb.Statistics;
+import com.kodilla.patterns2.adapter.bookclassifier.libraryb.Book;
+import com.kodilla.patterns2.adapter.bookclassifier.libraryb.BookSignature;
+import com.kodilla.patterns2.adapter.bookclassifier.libraryb.Statistics;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
