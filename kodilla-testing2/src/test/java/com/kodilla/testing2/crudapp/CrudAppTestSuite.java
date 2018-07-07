@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -74,7 +75,26 @@ public class CrudAppTestSuite {
                             theForm.findElement(By.xpath(".//button[contains(@class, \"card-creation\")]"));
                     buttonCreateCard.click();
                 });
-        Thread.sleep(5000);
+        Thread.sleep(2000);
+
+        try {
+            driver.switchTo().alert().accept();
+        } catch (NoAlertPresentException e) {
+            // Do nothing
+        }
+
+        Thread.sleep(2000);
+    }
+
+    private void deleteTaskFromCrudApp(String taskName) throws InterruptedException {
+
+        driver.findElements(By.xpath("//form[@class=\"datatable__row\"]")).stream()
+                .filter(anyForm ->
+                        anyForm.findElement(By.xpath(".//p[@class=\"datatable__field-value\"]"))
+                                .getText().equals(taskName))
+                .forEach(theForm -> theForm.findElement(By.xpath(".//button[contains(., \"Delete\")]")).click());
+
+        Thread.sleep(2000);
     }
 
     private boolean checkTaskExistsInTrello(String taskName) throws InterruptedException {
@@ -118,6 +138,7 @@ public class CrudAppTestSuite {
     public void shouldCreateTrelloCard() throws InterruptedException {
         String taskName = createCrudAppTestTask();
         sendTestTaskToTrello(taskName);
+        deleteTaskFromCrudApp(taskName);
         assertTrue(checkTaskExistsInTrello(taskName));
     }
 
