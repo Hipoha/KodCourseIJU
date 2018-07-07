@@ -9,10 +9,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CrudAppTestSuite {
     private static final String BASE_URL = "https://Meteo-R.github.io";
@@ -72,10 +77,48 @@ public class CrudAppTestSuite {
         Thread.sleep(5000);
     }
 
+    private boolean checkTaskExistsInTrello(String taskName) throws InterruptedException {
+        final String TRELLO_URL = "https://trello.com/login";
+        final String XPATH_TABLICA_STARTOWA = "//ul[@class=\"boards-page-board-section-list\"]" +
+                "//span[@title=\"Tablica startowa\"]";
+        final String XPATH_CARD_NAMES = "//div[@class=\"list js-list-content\"]//span[contains(@class, \"list-card-title js-card-name\")]";
+
+        boolean result = false;
+        WebDriver driverTrello = WebDriverConfig.getDriver(WebDriverConfig.CHROME);
+        driverTrello.get(TRELLO_URL);
+
+        driverTrello.findElement(By.id("user")).sendKeys("trello_login");
+        driverTrello.findElement(By.id("password")).sendKeys("trello_password");
+        driverTrello.findElement(By.id("login")).click();
+
+        Thread.sleep(6000);
+
+        driverTrello.findElement(By.xpath("//nav[@class=\"home-left-sidebar-container\"]"))
+                .findElement(By.linkText("Tablice")).click();
+
+        Thread.sleep(2000);
+
+        driverTrello.findElement(By.xpath(XPATH_TABLICA_STARTOWA)).click();
+
+        Thread.sleep(2000);
+
+        driverTrello.findElements(By.xpath(XPATH_CARD_NAMES));
+
+        result = driverTrello.findElements(By.xpath(XPATH_CARD_NAMES)).stream()
+                .filter(theSpan -> theSpan.getText().contains(taskName))
+                .collect(Collectors.toList())
+                .size() > 0;
+
+        driverTrello.close();
+
+        return result;
+    }
+
     @Test
     public void shouldCreateTrelloCard() throws InterruptedException {
         String taskName = createCrudAppTestTask();
         sendTestTaskToTrello(taskName);
+        assertTrue(checkTaskExistsInTrello(taskName));
     }
 
 }
